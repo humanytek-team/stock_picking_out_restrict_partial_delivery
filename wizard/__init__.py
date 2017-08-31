@@ -20,5 +20,4 @@
 #
 ###############################################################################
 
-import models
-import wizard
+import stock_backorder_confirmation

@@ -20,5 +20,20 @@
 #
 ###############################################################################
 
-import models
-import wizard
+from openerp import api, models
+from openerp.exceptions import ValidationError
+from openerp.tools.translate import _
+
+class stock_backorder_confirmation(models.TransientModel):
+    _inherit = 'stock.backorder.confirmation'
+
+    @api.multi
+    def _process(self, cancel_backorder=False):
+
+        if not self.pick_id.authorize_partial_delivery:
+            raise ValidationError(
+                _('Partial delivery is not permitted for this transfer. Check with your stock manager')
+                )
+
+        return super(stock_backorder_confirmation, self)._process(
+            cancel_backorder)
